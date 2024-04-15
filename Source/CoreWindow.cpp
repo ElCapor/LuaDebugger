@@ -1,5 +1,30 @@
 #include "CoreWindow.hpp"
 #include <LuaVM/LuaVM.hpp>
+#include <ImGui/ExtendedWidgets.hpp>
+
+std::map<const char*, int> optimization_levels = {
+    {"No optimizations", 0},
+    {"Baseline Optimization (debuggable)", 1},
+    {"Full Optimization (non debuggable)", 2}
+};
+
+std::map<const char*, int> debug_levels = {
+    {"No debugging support", 0},
+    {"Line info & function names only", 1},
+    {"Full debug info with locals & upvalues names", 2}
+};
+
+std::map<const char*, int> coverage_levels = {
+    {"No code coverage support", 0},
+    {"Statement coverage", 1},
+    {"Statements and expressions coverage (verbose)", 2}
+};
+
+
+std::pair<const char*, int> selected_optimization_level = {"", -1};
+std::pair<const char*, int> selected_debug_level = {"", -1};
+std::pair<const char*, int> selected_coverage_level = {"", -1};
+
 
 LuaDebugger::CoreWindow::CoreWindow()
 {
@@ -11,6 +36,7 @@ void LuaDebugger::CoreWindow::begin()
 {
     beginAutohandle();
 }
+
 
 void LuaDebugger::CoreWindow::tick(float deltaTime)
 {
@@ -48,6 +74,21 @@ void LuaDebugger::CoreWindow::tick(float deltaTime)
         {
             notesEditor.Render("My Notes");
             ImGui::EndTabItem();
+        }
+        if (ImGui::BeginTabItem("Settings", (void*)nullptr,ImGuiTabItemFlags_None))
+        {
+            ImGui::Text("Compile Options");
+            MapCombo<int>("Optimization Level", optimization_levels, selected_optimization_level, {"default (baseline)", 1});
+            MapCombo<int>("Debug Level", debug_levels, selected_debug_level, {"default (line info only)", 1});
+            MapCombo<int>("Code Coverage", coverage_levels, selected_coverage_level, {"default (no coverage)", 0});
+            // Show selected item
+            //ImGui::Text("Selected Item: %s (%d)", selec.first ? selectedItem.first : "None", selectedItem.second);
+            ImGui::Text("LuaVM Options");
+            ImGui::Checkbox("Debug mode", &LuaVM::get()->getOptions().debug);
+            ImGui::Checkbox("Register functions", &LuaVM::get()->getOptions().register_functions);
+            ImGui::Checkbox("Emulate Roblox", &LuaVM::get()->getOptions().emulate_roblox);
+            ImGui::Checkbox("Sandbox libraries", &LuaVM::get()->getOptions().sandbox_libs);
+            ImGui::InputText("Virtual Script Name", &LuaVM::get()->getOptions().vname);
         }
         ImGui::EndTabBar();
     }

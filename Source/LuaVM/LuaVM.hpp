@@ -3,6 +3,7 @@
 
 #include <string>
 #include <memory>
+#include <map>
 
 #include <Utils/Singleton.hpp>
 
@@ -21,6 +22,8 @@ struct LuaVMOptions {
 
     lua_CompileOptions* compile_options = new lua_CompileOptions();
 };
+
+
 
 class LuaVM : public Singleton<LuaVM>
 {
