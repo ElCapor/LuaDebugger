@@ -1,0 +1,9 @@
+[submodule "luau"]
+	path = luau
+	url = https://github.com/luau-lang/luau.git
+[submodule "rcmp"]
+	path = rcmp
+	url = https://github.com/Smertig/rcmp.git
+[submodule "ImGuiColorTextEdit"]
+	path = ImGuiColorTextEdit
+	url = https://github.com/ElCapor/ImGuiColorTextEdit.git
