@@ -241,6 +241,11 @@ if (USE_I18N_MODULE)
     endif()
 endif()
 
+set(LUAU_BUILD_CLI OFF)
+set(LUAU_BUILD_TESTS  OFF)
+add_subdirectory(luau)
+add_subdirectory(rcmp)
+
 # ----------------------------------------------------------------------------------------------------------------------
 # ---------------------------------------------- Add files and directories ---------------------------------------------
 # ----------------------------------------------------------------------------------------------------------------------
@@ -254,7 +259,7 @@ include_directories("Source/" "Framework/" "Framework/ThirdParty/imgui/core/" "F
 
 
 link_directories("ThirdParty/glew/lib" "Framework/ThirdParty/vulkan" UVKBuildTool/build)
-
+add_definitions("-DUVK_LOG_IMGUI")
 if (UIMGUI_PLATFORM STREQUAL "DESKTOP")
     file(GLOB_RECURSE IMGUI_SRC "Framework/ThirdParty/imgui/backends/imgui_impl_glfw.cpp"
             "Framework/ThirdParty/imgui/backends/imgui_impl_opengl3.cpp"
@@ -298,8 +303,11 @@ file(GLOB_RECURSE UGUI_HEAD "Framework/Core/*.hpp" "Framework/Renderer/*.hpp" ${
         "Framework/Modules/i18n/src/*.hpp" "Framework/Modules/Undo/src/*.hpp" "Framework/Modules/Manager/*.hpp"
         "Framework/Modules/OS/src/*.h" "Framework/Modules/OS/src/*.hpp")
 
-file(GLOB_RECURSE UGUI_APP_SRC "Source/*.cpp")
-file(GLOB_RECURSE UGUI_APP_HEAD "Source/*.hpp" "Generated/Config.hpp")
+file(GLOB_RECURSE IMGUI_TEXT_EDIT_SRC "ImGuiColorTextEdit/*.cpp")
+file(GLOB_RECURSE IMGUI_TEXT_EDIT_HEAD "ImGuiColorTextEdit/*.h")
+
+file(GLOB_RECURSE UGUI_APP_SRC "Source/**.cpp")
+file(GLOB_RECURSE UGUI_APP_HEAD "Source/**.h[pp]" "Generated/Config.hpp")
 
 file(GLOB_RECURSE EXEC_SRC "")
 
@@ -376,7 +384,7 @@ set(LIBRARY_SOURCES "${UGUI_SRC}" "${UGUI_HEAD}" "Generated/BuildDef.hpp" "${UGU
 set(EXECUTABLE_SOURCES "Generated/main.cpp" "${UGUI_HEAD}" "${EXEC_SRC}" "Generated/BuildDef.hpp" "${UGUI_IMPLOT_HEAD}"
         "${UGUI_TOGGLES_HEAD}" "${UGUI_SPINNER_HEAD}" "${UGUI_KNOBS_HEAD}" "${UGUI_CLI_HEAD}" "${UGUI_APP_HEAD}"
         "${UGUI_TEXT_UTILS_HEAD}" "${UTHEME_HEAD}")
-set(APP_LIBRARY_SOURCES "${UGUI_APP_SRC}" "${UGUI_APP_HEAD}" "${LM_INCLUDE_DIRS}")
+set(APP_LIBRARY_SOURCES "${IMGUI_TEXT_EDIT_SRC}" "${IMGUI_TEXT_EDIT_HEAD}" "${UGUI_APP_SRC}" "${UGUI_APP_HEAD}" "${LM_INCLUDE_DIRS}")
 if (BUILD_VARIANT_STATIC)
     if (WIN32)
         add_library(UntitledImGuiFramework STATIC "${LIBRARY_SOURCES}" "${APP_LIBRARY_SOURCES}")
@@ -470,7 +478,6 @@ endif()
 # ----------------------------------------------------------------------------------------------------------------------
 # ------------------------------------------ Set up project compiler definitions ---------------------------------------
 # ----------------------------------------------------------------------------------------------------------------------
-
 target_compile_definitions(UntitledImGuiFramework PRIVATE "UIMGUI_COMPILE_LIB" "YAML_CPP_DLL"
         "UVK_LOG_EXPORT_FROM_LIBRARY" "UVK_LIB_COMPILE" "URLL_USE_FUNCTIONAL")
 if (NOT WIN32)
@@ -484,7 +491,7 @@ target_compile_definitions(LuaDebugger PRIVATE "UVK_LOG_EXPORT_FROM_LIBRARY" "UR
 
 if (WIN32)
     target_link_libraries(UntitledImGuiFramework ${GLFW_LIBRARIES_T} ${GLEW_LIBRARIES_T} ${OPENGL_LIBRARIES_T}
-            ${YAML_CPP_LIBRARIES_T} ${FREETYPE_LIBRARIES} ${VULKAN_LIBRARIES_T})
+            ${YAML_CPP_LIBRARIES_T} ${FREETYPE_LIBRARIES} ${VULKAN_LIBRARIES_T} rcmp Luau.Compiler Luau.VM)
     target_link_libraries(LuaDebugger UntitledImGuiFramework ${YAML_CPP_LIBRARIES_T})
 else()
     target_link_libraries(UntitledImGuiFramework ${GLFW_LIBRARIES_T} ${GLEW_LIBRARIES_T} ${OPENGL_LIBRARIES_T}
