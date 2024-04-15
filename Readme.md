@@ -43,5 +43,7 @@ Run `generate.bat` and then you can build the project normally just like any oth
 # Credits
 
 [@ElCapor](https://github.com/ElCapor) - Main Developer
+
 [@Ficello](https://github.com/Ficelloo) - Gave me the idea of deobsfucating Luau code for fun
+
 [@Madman10k](https://github.com/Madman10K) - The creator of [UntitledImGuiFramework](https://github.com/MadLadSquad/UntitledImGuiFramework) , who kindly spend over 4 hours helping me with the project generation and setup, and still continues to help me
