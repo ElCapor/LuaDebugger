@@ -11,6 +11,9 @@ Note : I think that for now this project is windows only , since stuff like Dump
 - Technical Documentation of the various custom functions available in the environnement
 - A notes tab where you can take note of anything that you see in the script and you want to remember
 
+# Random Ideas I have
+- Find a way to snapshot lua_State* to analyze it (maybe make a full copy when script is finished ?)
+
 # TODO :
 - [ ] Add a way to save/read the code to a file
 - [ ] Add Documentation
@@ -26,6 +29,7 @@ Note : I think that for now this project is windows only , since stuff like Dump
 # How to build ?
 ## Video Tutorial (Recommended) : Coming soon
 ## Getting the dependencies :
+## Make sure to have [cmake](https://cmake.org) installed
 Download UntitledImGuiFramework through git :
 
 ```sh

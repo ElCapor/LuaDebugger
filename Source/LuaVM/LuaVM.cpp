@@ -1,5 +1,5 @@
 #include "LuaVM.hpp"
-
+#include <iostream>
 LuaVM::LuaVM() {}
 
 LuaVM::~LuaVM() {}
@@ -10,13 +10,55 @@ LuaVMOptions &LuaVM::getOptions() {
   return this->options;
 }
 
+LuaVMData & LuaVM::getData()
+{
+    return this->luaVMData;
+}
+
+void LuaVM::ResetData() {
+    this->luaVMData.luaConstants = {};
+}
+
+class Player {
+public:
+    std::string name;
+    int health;
+    bool isDead;
+
+    Player(std::string name = "Player")
+    {
+        this->health = 100;
+        this->isDead = false;
+    }
+    std::string GetName()
+    {
+        return this->name;
+    }
+    void Die()
+    {
+        health = 0;
+        this->isDead = true;
+
+    }
+
+    void Restart()
+    {
+        health = 100;
+        this->isDead = false;
+    }
+};
+
+
 void LuaVM::SetupState(lua_State *L) {
+    ResetData();
     luaL_openlibs(L);
     if (this->options.sandbox_libs)
         luaL_sandbox(L);
 }
 
-void LuaVM::RegisterFunctions(lua_State *L) {}
+void LuaVM::RegisterFunctions(lua_State *L) {
+    
+}
 
 std::string LuaVM::runCode(lua_State *L, const std::string &code) {
     size_t bytecodeSize = 0;
@@ -105,7 +147,7 @@ std::string LuaVM::executeScript(std::string script) {
 
     // static string for caching result (prevents dangling ptr on function exit)
     static std::string result;
-
+    RegisterFunctions(L);
     // run code + collect error
     result = runCode(L, script);
 
