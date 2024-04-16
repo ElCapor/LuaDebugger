@@ -2,6 +2,8 @@
 Lua Debugger is an attempt at writing a Luau instrumentation toolkit , that reversers can use to deobsfucate and analyze malicious Luau code.
 
 It's still a work in a progress and lacks a lot of features , but hey you gotta start somwhere :)
+
+Note : I think that for now this project is windows only , since stuff like Dump Constants relies on hooking code that is specific to MSVC, maybe one day i will port it to linux ?
 # Images
 ![alt text](repo-data/screenshot.png)
 # Features

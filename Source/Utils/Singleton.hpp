@@ -1,23 +1,31 @@
 #ifndef SINGLETON_HPP
 #define SINGLETON_HPP
 
-template <typename T>
-class Singleton
+/*
+General utilities for the project
+*/
+
+namespace Utils
 {
-public:
-    static T *get()
+
+    template <typename T>
+    class Singleton
     {
-        static T instance;
-        return &instance;
-    }
+    public:
+        static T *get()
+        {
+            static T instance;
+            return &instance;
+        }
 
-protected:
-    Singleton() {}
-    ~Singleton() {}
+    protected:
+        Singleton() {}
+        ~Singleton() {}
 
-private:
-    Singleton(Singleton const &){};
-    Singleton &operator=(Singleton const &){};
-};
+    private:
+        Singleton(Singleton const &){};
+        Singleton &operator=(Singleton const &){};
+    };
 
+}
 #endif // SINGLETON_HPP

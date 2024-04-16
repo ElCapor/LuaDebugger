@@ -25,7 +25,7 @@ struct LuaVMOptions {
 
 
 
-class LuaVM : public Singleton<LuaVM>
+class LuaVM : public Utils::Singleton<LuaVM>
 {
     LuaVMOptions options;
     public:
