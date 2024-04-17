@@ -4,6 +4,8 @@
 #include <rcmp/include/rcmp.hpp>
 #include <luau/Compiler/include/Luau/BytecodeBuilder.h>
 #include <Utils/Utils.hpp>
+#include <type_traits>
+
 std::map<const char*, int> optimization_levels = {
     {"No optimizations", 0},
     {"Baseline Optimization (debuggable)", 1},
@@ -41,6 +43,12 @@ void LuaDebugger::CoreWindow::begin()
     beginAutohandle();
 }
 
+void funnyhook(const char* msg)
+{
+
+}
+
+LuaHook<decltype(&Luau::BytecodeBuilder::addConstantString)> idk(&Luau::BytecodeBuilder::addConstantString);
 
 void LuaDebugger::CoreWindow::tick(float deltaTime)
 {
@@ -55,6 +63,8 @@ void LuaDebugger::CoreWindow::tick(float deltaTime)
                 UVKLog::Logger::log(std::string("Luau:::BytecodeBuilder::addConstantString with value " + std::string(ref.data) + " returns " + std::to_string(val)).c_str(), UVKLog::LogType::UVK_LOG_TYPE_MESSAGE);
             return val;
         });
+        idk.print();
+        
 
         //rcmp::hook_function<int32_t()>(addr, [](auto original, Luau::Bytecode))
         init = true;
@@ -103,7 +113,6 @@ void LuaDebugger::CoreWindow::tick(float deltaTime)
             ImGui::Checkbox("Emulate Roblox", &LuaVM::get()->getOptions().emulate_roblox);
             ImGui::Checkbox("Sandbox libraries", &LuaVM::get()->getOptions().sandbox_libs);
             ImGui::InputText("Virtual Script Name", &LuaVM::get()->getOptions().vname);
-            ImGui::Checkbox(EXTRACT_SUBSTRING(LuaHooksBool::addConstantBoolean_hook_enabled).c_str(), &Hooks::LuaHooksBools.addConstantBoolean_hook_enabled);
         }
         ImGui::EndTabBar();
     }

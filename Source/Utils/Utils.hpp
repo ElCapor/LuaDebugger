@@ -10,7 +10,7 @@ namespace Utils
 {
     // very important to set this accordingly to your build
     // or else the program will fail
-    bool isRelWithDebInfo = true;
+    //bool isRelWithDebInfo = true;
 
     // force cast trick for getting member functions
     template <typename out, typename in>
@@ -37,7 +37,7 @@ namespace Utils
     std::uintptr_t GetClassMemberFunctionAddress(in member_function)
     {
         // there's a jmp
-        if (Utils::isRelWithDebInfo)
+        if (true)
         {
             std::uintptr_t ptr = (std::uintptr_t)ForceCast<void*>(member_function);
             // relative is 1 byte from jmp
