@@ -28,8 +28,6 @@ std::pair<const char*, int> selected_debug_level = {"", -1};
 std::pair<const char*, int> selected_coverage_level = {"", -1};
 
 
-
-
 LuaDebugger::CoreWindow::CoreWindow()
 {
 
@@ -51,11 +49,9 @@ void LuaDebugger::CoreWindow::tick(float deltaTime)
         rcmp::hook_function<int32_t(Luau::BytecodeBuilder*, Luau::BytecodeBuilder::StringRef)>(Utils::GetClassMemberFunctionAddress(&Luau::BytecodeBuilder::addConstantString), [](auto original, Luau::BytecodeBuilder* self, Luau::BytecodeBuilder::StringRef ref) -> int32_t
         {   
             int32_t val = original(self, ref);
-            if (LuaVM::get()->getOptions().dump_constants)
-                UVKLog::Logger::log(std::string("Luau:::BytecodeBuilder::addConstantString with value " + std::string(ref.data) + " returns " + std::to_string(val)).c_str(), UVKLog::LogType::UVK_LOG_TYPE_MESSAGE);
+            UVKLog::Logger::log(std::string("Luau:::BytecodeBuilder::addConstantString with value " + std::string(ref.data) + " returns " + std::to_string(val)).c_str(), UVKLog::LogType::UVK_LOG_TYPE_MESSAGE);
             return val;
         });
-
         //rcmp::hook_function<int32_t()>(addr, [](auto original, Luau::Bytecode))
         init = true;
     }
@@ -98,7 +94,6 @@ void LuaDebugger::CoreWindow::tick(float deltaTime)
             //ImGui::Text("Selected Item: %s (%d)", selec.first ? selectedItem.first : "None", selectedItem.second);
             ImGui::Text("LuaVM Options");
             ImGui::Checkbox("Debug mode", &LuaVM::get()->getOptions().debug);
-            ImGui::Checkbox("Dump Constants", &LuaVM::get()->getOptions().dump_constants);
             ImGui::Checkbox("Register functions", &LuaVM::get()->getOptions().register_functions);
             ImGui::Checkbox("Emulate Roblox", &LuaVM::get()->getOptions().emulate_roblox);
             ImGui::Checkbox("Sandbox libraries", &LuaVM::get()->getOptions().sandbox_libs);
