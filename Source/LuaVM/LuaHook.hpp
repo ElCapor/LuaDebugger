@@ -12,12 +12,7 @@ Enable or disable hooks
 
 #define LUA_HOOK_BOOL_NAME(boolName) boolName##_hook_enabled
 #define LBN(boolName) LUA_HOOK_BOOL_NAME(boolName)
-
-#define STRLEN(s) (sizeof(s) - 1)
-#define EXTRACT_SUBSTRING(input) (std::string(#input).find("_hook_enabled") != std::string::npos ? \
-                                                       std::string(#input).substr(12, std::string(#input).find("_hook_enabled")) : \
-                                                       std::string(#input))
-struct LuaHooksBool
+typedef struct
 {
 public:
     MEMBER_DECLARATION(
@@ -29,13 +24,7 @@ public:
     LBN(addConstantTable),
     LBN(addConstantClosure)
     );
-};
-
-namespace Hooks
-{
-    LuaHooksBool LuaHooksBools;
-}
-
+} LuaHooksBool;
 
 #define IS_HOOK_ENABLED(HookName) LuaHooksBool.LUA_HOOK_BOOL_NAME(HookName) == true
 

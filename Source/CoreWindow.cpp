@@ -103,7 +103,6 @@ void LuaDebugger::CoreWindow::tick(float deltaTime)
             ImGui::Checkbox("Emulate Roblox", &LuaVM::get()->getOptions().emulate_roblox);
             ImGui::Checkbox("Sandbox libraries", &LuaVM::get()->getOptions().sandbox_libs);
             ImGui::InputText("Virtual Script Name", &LuaVM::get()->getOptions().vname);
-            ImGui::Checkbox(EXTRACT_SUBSTRING(LuaHooksBool::addConstantBoolean_hook_enabled).c_str(), &Hooks::LuaHooksBools.addConstantBoolean_hook_enabled);
         }
         ImGui::EndTabBar();
     }
