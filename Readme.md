@@ -12,6 +12,7 @@ Note : I think that for now this project is windows only , since stuff like Dump
 - A notes tab where you can take note of anything that you see in the script and you want to remember
 
 # TODO :
+- [ ] Urgent : Rewrite python parser
 - [ ] Add a way to save/read the code to a file
 - [ ] Add Documentation
 - [ ] Log all actions happening

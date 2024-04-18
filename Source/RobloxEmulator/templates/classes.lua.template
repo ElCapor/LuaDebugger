@@ -6,9 +6,9 @@ _G.{{class["Name"]}} = {}
 {%- if member["ValueType"]["Category"] == "Primitive" -%}
 {%- if member["ValueType"]["Name"] == "float" -%}
 {{"\n"}}{{class["Name"]}}{{"" if member["Name"][0] == "[" else "."}}{{member["Name"]}} = 0
-{%- if member["ValueType"]["Name"] == "int" -%}
+{%- elif member["ValueType"]["Name"] == "int" -%}
 {{"\n"}}{{class["Name"]}}{{"" if member["Name"][0] == "[" else "."}}{{member["Name"]}} = 0
-{%- if member["ValueType"]["Name"] == "int64" -%}
+{%- elif member["ValueType"]["Name"] == "int64" -%}
 {{"\n"}}{{class["Name"]}}{{"" if member["Name"][0] == "[" else "."}}{{member["Name"]}} = 0
 {%- elif member["ValueType"]["Name"] == "bool" -%}
 {{"\n"}}{{class["Name"]}}{{"" if member["Name"][0] == "[" else "."}}{{member["Name"]}} = true
@@ -16,10 +16,10 @@ _G.{{class["Name"]}} = {}
 {{"\n"}}{{class["Name"]}}{{"" if member["Name"][0] == "[" else "."}}{{member["Name"]}} = ""
 {%- endif -%}
 {%- endif -%}
-{%- endif -%}
 {#- Functions Registeration -#}
 {%- elif member["MemberType"] == "Function" -%}
 {{"\n"}}{{class["Name"]}}{{"" if member["Name"][0] == "[" else "."}}{{member["Name"]}} = function({{write_params(member["Parameters"])}})
+{{ write_body(member) }}
 {%- endif -%}
 {%- endfor -%}
 {% endfor %}
