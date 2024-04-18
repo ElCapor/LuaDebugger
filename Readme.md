@@ -12,13 +12,19 @@ Note : I think that for now this project is windows only , since stuff like Dump
 - A notes tab where you can take note of anything that you see in the script and you want to remember
 
 # TODO :
+## Roblox Simulator
+- [ ] Very Urgent : Write a metatable generator
 - [ ] Urgent : Rewrite python parser
-- [ ] Add a way to save/read the code to a file
+
+
+## Luau VM
 - [ ] Add Documentation
 - [ ] Log all actions happening
 - [ ] Place hooks on lua C functions on the fly and inspect their values
 - [ ] Add a bytecode viewer
-
+  
+## Window
+- [ ] Add a way to save/read the code to a file (using UntitledOpen)
 # Design Research
 I'm currently attempting an architecture design through UML diagrams like nomnoml
 
