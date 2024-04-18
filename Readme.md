@@ -1,5 +1,3 @@
-# NOTE : ON HOLD UNTIL I LEARN METAPROGRAMMING CORRECTLY FOR THE HOOK SYSTEM
-# Lua Debugger
 Lua Debugger is an attempt at writing a Luau instrumentation toolkit , that reversers can use to deobsfucate and analyze malicious Luau code.
 
 It's still a work in a progress and lacks a lot of features , but hey you gotta start somwhere :)
