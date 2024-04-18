@@ -1,5 +1,4 @@
-# NOTE : ON HOLD UNTIL I LEARN METAPROGRAMMING CORRECTLY FOR THE HOOK SYSTEM
-# Lua Debugger
+# About
 Lua Debugger is an attempt at writing a Luau instrumentation toolkit , that reversers can use to deobsfucate and analyze malicious Luau code.
 
 It's still a work in a progress and lacks a lot of features , but hey you gotta start somwhere :)
@@ -53,5 +52,7 @@ Run `generate.bat` and then you can build the project normally just like any oth
 [@ElCapor](https://github.com/ElCapor) - Main Developer
 
 [@Ficello](https://github.com/Ficelloo) - Gave me the idea of deobsfucating Luau code for fun
+
+[@Azateix](https://github.com/Azateix) - Very cool guy
 
 [@Madman10k](https://github.com/Madman10K) - The creator of [UntitledImGuiFramework](https://github.com/MadLadSquad/UntitledImGuiFramework) , who kindly spend over 4 hours helping me with the project generation and setup, and still continues to help me
