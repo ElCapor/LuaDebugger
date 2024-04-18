@@ -22,6 +22,7 @@ Note : I think that for now this project is windows only , since stuff like Dump
 # Design Research
 I'm currently attempting an architecture design through UML diagrams like nomnoml
 
+![UML Diagram](repo-data/diagram.png)
 # Technologies used
 - ## [luau](https://github.com/luau-lang/luau)
 - ## [UntitledImGuiFramework](https://github.com/MadLadSquad/UntitledImGuiFramework)
