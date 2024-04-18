@@ -1,14 +1,23 @@
 {% for class in classes %}
-local {{class["Name"]}} = {}
+_G.{{class["Name"]}} = {}
+{#- Members Registration -#}
 {%- for member in class["Members"] -%}
 {%- if member["MemberType"] == "Property" -%}
 {%- if member["ValueType"]["Category"] == "Primitive" -%}
 {%- if member["ValueType"]["Name"] == "float" -%}
-{{"\n"}}{{class["Name"]}}.{{member["Name"]}} = 0
+{{"\n"}}{{class["Name"]}}{{"" if member["Name"][0] == "[" else "."}}{{member["Name"]}} = 0
+{%- if member["ValueType"]["Name"] == "int" -%}
+{{"\n"}}{{class["Name"]}}{{"" if member["Name"][0] == "[" else "."}}{{member["Name"]}} = 0
 {%- elif member["ValueType"]["Name"] == "bool" -%}
-{{"\n"}}{{class["Name"]}}.{{member["Name"]}} = true
+{{"\n"}}{{class["Name"]}}{{"" if member["Name"][0] == "[" else "."}}{{member["Name"]}} = true
+{%- elif member["ValueType"]["Name"] == "string" -%}
+{{"\n"}}{{class["Name"]}}{{"" if member["Name"][0] == "[" else "."}}{{member["Name"]}} = ""
 {%- endif -%}
 {%- endif -%}
+{%- endif -%}
+{#- Functions Registeration -#}
+{%- elif member["MemberType"] == "Function" -%}
+{{"\n"}}{{class["Name"]}}{{"" if member["Name"][0] == "[" else "."}}{{member["Name"]}} = function({%- for parameter in member["Parameters"] -%}{{parameter["Name"]}} :{{parameter["Type"]["Name"]}}{{"," if len(member["Parameters"]) > 1 or parameter["Name"] != member["Parameters"][-1]["Name"] else ""}}{%- endfor-%})
 {%- endif -%}
 {%- endfor -%}
 {% endfor %}
