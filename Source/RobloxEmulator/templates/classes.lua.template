@@ -8,6 +8,8 @@ _G.{{class["Name"]}} = {}
 {{"\n"}}{{class["Name"]}}{{"" if member["Name"][0] == "[" else "."}}{{member["Name"]}} = 0
 {%- if member["ValueType"]["Name"] == "int" -%}
 {{"\n"}}{{class["Name"]}}{{"" if member["Name"][0] == "[" else "."}}{{member["Name"]}} = 0
+{%- if member["ValueType"]["Name"] == "int64" -%}
+{{"\n"}}{{class["Name"]}}{{"" if member["Name"][0] == "[" else "."}}{{member["Name"]}} = 0
 {%- elif member["ValueType"]["Name"] == "bool" -%}
 {{"\n"}}{{class["Name"]}}{{"" if member["Name"][0] == "[" else "."}}{{member["Name"]}} = true
 {%- elif member["ValueType"]["Name"] == "string" -%}
@@ -17,7 +19,7 @@ _G.{{class["Name"]}} = {}
 {%- endif -%}
 {#- Functions Registeration -#}
 {%- elif member["MemberType"] == "Function" -%}
-{{"\n"}}{{class["Name"]}}{{"" if member["Name"][0] == "[" else "."}}{{member["Name"]}} = function({%- for parameter in member["Parameters"] -%}{{parameter["Name"]}} :{{parameter["Type"]["Name"]}}{{"," if len(member["Parameters"]) > 1 or parameter["Name"] != member["Parameters"][-1]["Name"] else ""}}{%- endfor-%})
+{{"\n"}}{{class["Name"]}}{{"" if member["Name"][0] == "[" else "."}}{{member["Name"]}} = function({{write_params(member["Parameters"])}})
 {%- endif -%}
 {%- endfor -%}
 {% endfor %}
