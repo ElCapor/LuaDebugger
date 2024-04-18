@@ -1,0 +1,14 @@
+{% for class in classes %}
+local {{class["Name"]}} = {}
+{%- for member in class["Members"] -%}
+{%- if member["MemberType"] == "Property" -%}
+{%- if member["ValueType"]["Category"] == "Primitive" -%}
+{%- if member["ValueType"]["Name"] == "float" -%}
+{{"\n"}}{{class["Name"]}}.{{member["Name"]}} = 0
+{%- elif member["ValueType"]["Name"] == "bool" -%}
+{{"\n"}}{{class["Name"]}}.{{member["Name"]}} = true
+{%- endif -%}
+{%- endif -%}
+{%- endif -%}
+{%- endfor -%}
+{% endfor %}

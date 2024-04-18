@@ -30,6 +30,37 @@ std::pair<const char*, int> selected_optimization_level = {"", -1};
 std::pair<const char*, int> selected_debug_level = {"", -1};
 std::pair<const char*, int> selected_coverage_level = {"", -1};
 
+enum class TableInstructionType{
+    TableInstructionType_NONE = -1,
+    TableInstructionType_GET = 0,
+    TableInstructionType_SET = 1,
+    TableInstructionType_MAX
+};
+
+struct TableInstruction
+{
+    TableInstructionType type;
+    TValue* t;
+    TValue* key;
+
+    TableInstruction(TableInstructionType type = TableInstructionType::TableInstructionType_NONE, TValue* table = nullptr, TValue* key = nullptr)
+    : type(type), t(table), key(key)
+    {
+
+    }
+
+    std::string GetKey()
+    {
+        return key ? ttisstring(key) ? std::string(getstr(tsvalue(key))) : "" : "";
+    }
+
+    Table* GetTable()
+    {
+        return t ? ttistable(t) ? hvalue(t) : nullptr : nullptr;
+    }
+};
+
+std::vector<TableInstruction> m_TableInstructions;
 
 LuaDebugger::CoreWindow::CoreWindow()
 {
@@ -57,12 +88,22 @@ void LuaDebugger::CoreWindow::tick(float deltaTime)
             return val;
         });
         */
-       
+
         rcmp::hook_function<void(lua_State* L, const TValue* t, TValue* key, StkId val)>(Utils::GetClassMemberFunctionAddress(&luaV_gettable), [](auto original, lua_State* L, const TValue* t, TValue* key, StkId val){
             TString* name = ttisstring(key) ? tsvalue(key) : 0;
             if (name)
             {
+                m_TableInstructions.push_back(
+                    TableInstruction(
+                        TableInstructionType::TableInstructionType_GET,
+                        t,
+                        key)
+                    );
                 std::cout << "luaV_gettable called " << getstr(name) << std::endl;
+            }
+            if (ttistable(t))
+            {
+                Table* h = hvalue(t); 
             }
             original(L, t, key, val);
         });

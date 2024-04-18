@@ -44,3 +44,4 @@ Framework/
 UVKBuildTool
 Framework
 export.sh
+*.pyc
