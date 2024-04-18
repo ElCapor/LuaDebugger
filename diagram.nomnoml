@@ -1,0 +1,32 @@
+#zoom: 1
+#padding: 10
+#edges: rounded
+#ranker: longest-path
+#direction: right
+
+[LuaDebugger]
+[LuaDebugger] -> [CoreWindow]
+[CoreWindow] -> [Code Editor]
+[CoreWindow] -> [Lua VM]
+[CoreWindow] -> [SidePanel]
+[SidePanel] -> [Settings]
+[SidePanel] -> [Documentation]
+[Lua VM] -> [LuaVMData]
+[Lua VM] -> [LuaVMOptions]
+[Lua VM] ->? [Lua VM Runner]
+[Lua VM] ->? [Lua VM Sandboxer]
+[Lua VM] ->? [Lua VM Custom Classes]
+[Lua VM Custom Classes] ->? [BytecodeBuilderHook]
+[Lua VM Custom Classes] ->? [CompilerHook]
+[Lua VM] ->? [VMHooker]
+[Operation] -> [Index]
+[Operation] -> [NewIndex]
+[Operation] -> [Mov]
+[Operation] -> [CallFunc]
+[BytecodeBuilderHook] -> [LuaVMData]
+[CompilerHook] -> [LuaVMData]
+[LuaVMData] -> [Lua VM Data Analyzer]
+[Lua VM] -> [Lua VM Reflector]
+[Lua VM] -> [RobloxSimulator]
+[RobloxSimulator] ->? [Hook __index ?]
+[RobloxSimulator] ->? [Register all classes ?]

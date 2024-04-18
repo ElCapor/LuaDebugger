@@ -241,7 +241,7 @@ if (USE_I18N_MODULE)
     endif()
 endif()
 
-set(LUAU_BUILD_CLI OFF)
+set(LUAU_BUILD_CLI ON)
 set(LUAU_BUILD_TESTS  OFF)
 add_subdirectory(luau)
 add_subdirectory(rcmp)

@@ -18,6 +18,10 @@ Note : I think that for now this project is windows only , since stuff like Dump
 - [ ] Log all actions happening
 - [ ] Place hooks on lua C functions on the fly and inspect their values
 - [ ] Add a bytecode viewer
+
+# Design Research
+I'm currently attempting an architecture design through UML diagrams like nomnoml
+
 # Technologies used
 - ## [luau](https://github.com/luau-lang/luau)
 - ## [UntitledImGuiFramework](https://github.com/MadLadSquad/UntitledImGuiFramework)

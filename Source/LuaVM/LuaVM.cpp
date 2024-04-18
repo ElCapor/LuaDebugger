@@ -1,4 +1,11 @@
 #include "LuaVM.hpp"
+#include <luau/CodeGen/include/Luau/CodeGen.h>
+#include <luau/Compiler/include/Luau/Compiler.h>
+#include <luau/Compiler/include/Luau/BytecodeBuilder.h>
+#include <luau/VM/src/lstate.h>
+#include <luau/VM/src/lobject.h>
+#include <luau/VM/src/lapi.h>
+#include <iostream>
 
 LuaVM::LuaVM() {}
 
@@ -18,12 +25,26 @@ void LuaVM::SetupState(lua_State *L) {
 
 void LuaVM::RegisterFunctions(lua_State *L) {}
 
-std::string LuaVM::runCode(lua_State *L, const std::string &code) {
-    size_t bytecodeSize = 0;
-    char *bytecode = luau_compile(code.data(), code.size(), this->getOptions().compile_options, &bytecodeSize);
-    int result = luau_load(L, this->options.vname.c_str(), bytecode, bytecodeSize, 0);
-    free(bytecode);
+static Luau::CompileOptions copts()
+{
+    Luau::CompileOptions result = {};
+    result.optimizationLevel = 0;
+    result.debugLevel = 0;
 
+    return result;
+}
+
+std::string LuaVM::runCode(lua_State *L, const std::string &code) {
+    const auto& bytecode = Luau::compile(code, copts(), {});
+    int result = luau_load(L, this->options.vname.c_str(), bytecode.c_str(), bytecode.length(), 0);
+    if (lua_isLfunction(L, -1))
+    {
+        const TValue* func = luaA_toobject(L, -1);
+        Proto* root = clvalue(func)->l.p;
+        std::cout << "Root Proto Data : " << root->bytecodeid << " nups " << root->nups <<
+        " kys " << root->sizep << " name : " << root->source->data
+        << std::endl;
+    }
     if (result != LUA_OK)
     {
         size_t len;
@@ -92,7 +113,7 @@ std::string LuaVM::executeScript(std::string script) {
     for (Luau::FValue<bool>* flag = Luau::FValue<bool>::list; flag; flag = flag->next)
     if (strncmp(flag->name, "Luau", 4) == 0)
         flag->value = true;
-
+    
     std::unique_ptr<lua_State, void (*)(lua_State*)> globalState(luaL_newstate(), lua_close);
     lua_State* L = globalState.get();
 

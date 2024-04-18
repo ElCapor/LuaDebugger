@@ -4,6 +4,9 @@
 #include <rcmp/include/rcmp.hpp>
 #include <luau/Compiler/include/Luau/BytecodeBuilder.h>
 #include <Utils/Utils.hpp>
+#include <luau/VM/src/lstate.h>
+#include <luau/VM/src/lobject.h>
+#include <luau/VM/src/lvm.h>
 std::map<const char*, int> optimization_levels = {
     {"No optimizations", 0},
     {"Baseline Optimization (debuggable)", 1},
@@ -46,12 +49,24 @@ void LuaDebugger::CoreWindow::tick(float deltaTime)
     {
         luaEditor.SetLanguageDefinition(TextEditor::LanguageDefinition::Lua());
         notesEditor.SetText("Take note of things happening the script right here !");
+        /*
         rcmp::hook_function<int32_t(Luau::BytecodeBuilder*, Luau::BytecodeBuilder::StringRef)>(Utils::GetClassMemberFunctionAddress(&Luau::BytecodeBuilder::addConstantString), [](auto original, Luau::BytecodeBuilder* self, Luau::BytecodeBuilder::StringRef ref) -> int32_t
         {   
             int32_t val = original(self, ref);
             UVKLog::Logger::log(std::string("Luau:::BytecodeBuilder::addConstantString with value " + std::string(ref.data) + " returns " + std::to_string(val)).c_str(), UVKLog::LogType::UVK_LOG_TYPE_MESSAGE);
             return val;
         });
+        */
+       
+        rcmp::hook_function<void(lua_State* L, const TValue* t, TValue* key, StkId val)>(Utils::GetClassMemberFunctionAddress(&luaV_gettable), [](auto original, lua_State* L, const TValue* t, TValue* key, StkId val){
+            TString* name = ttisstring(key) ? tsvalue(key) : 0;
+            if (name)
+            {
+                std::cout << "luaV_gettable called " << getstr(name) << std::endl;
+            }
+            original(L, t, key, val);
+        });
+        
         //rcmp::hook_function<int32_t()>(addr, [](auto original, Luau::Bytecode))
         init = true;
     }
