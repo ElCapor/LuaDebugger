@@ -11,6 +11,8 @@ Note : I think that for now this project is windows only , since stuff like Dump
 - Technical Documentation of the various custom functions available in the environnement
 - A notes tab where you can take note of anything that you see in the script and you want to remember
 
+# NEW (interessant stuff that u should checkout)
+- New lua api parser [here](Source/RobloxEmulator/Readme.md)
 # TODO :
 ## Roblox Simulator
 - [ ] Very Urgent : Write a metatable generator

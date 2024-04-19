@@ -1,0 +1,51 @@
+#direction: right
+#ranker: longest-path
+[RobloxClass|
+data :dictionnary
+name :string
+members :RobloxClassMembers
+] +->
+
+[RobloxClassMembers|
+data :dictionnary
+size :int
+properties :list<RobloxProperty>
+functions :list<RobloxFunction>
+] -> [RobloxFunction]
+[RobloxClassMembers] -> [RobloxProperty]
+
+[RobloxType|
+- data :dicionnary
+- name :string
+- category :string|
++ GetCategory() :string
++ GetName() :string
++ IsPrimitive() :bool
++ IsDataType() :bool
++ GetType() : int / bool / float / str / None
+]
+
+[RobloxProperty|
+data :dictionnary
+W.I.P
+]
+
+[RobloxFunctionParameter|
+- data :dictionnary
+- name :string
+- type :RobloxType |
++ GetWithType() :string
++ GetType() :int / bool / float / str / None
+]
+[RobloxFunction|
+- data: dictionnary
+- name :string
+- parameters :list<RobloxFunctionParameter>
+- returns :list<RobloxType>|
++ GetParamsStr() :string
++ GetParamsWithType() :string
++ StrWithType() :string
+]
+
+[RobloxFunctionParameter] <-+ [RobloxType]
+[RobloxProperty] <-+ [RobloxType]
