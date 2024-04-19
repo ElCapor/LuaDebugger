@@ -1,6 +1,12 @@
 import json
 import requests
 import os
+
+"""
+Initially , this class was supposed to be used to retrieve roblox api json from their API,
+but it got sunset and we have to rely on RobloxAPIDumper tool by MaximumADHD, as a result
+the only meaningful function right now is Data()
+"""
 class APIDumper:
     def __init__(self) -> None:
         self.url = "https://anaminus.github.io/rbx/json/api/latest.json"

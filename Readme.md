@@ -14,7 +14,7 @@ Note : I think that for now this project is windows only , since stuff like Dump
 # TODO :
 ## Roblox Simulator
 - [ ] Very Urgent : Write a metatable generator
-- [ ] Urgent : Rewrite python parser
+- [X] Urgent : Rewrite python parser (50% Done)
 
 
 ## Luau VM
