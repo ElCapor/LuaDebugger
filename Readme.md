@@ -7,7 +7,7 @@ Note : I think that for now this project is windows only , since stuff like Dump
 # Images
 ![alt text](repo-data/screenshot.png)
 # Features
-- Run Lua Code is a fully sandboxed environnement separated from your computer
+- Run Luau Code in a fully sandboxed environnement separated from your computer
 - Technical Documentation of the various custom functions available in the environnement
 - A notes tab where you can take note of anything that you see in the script and you want to remember
 
@@ -46,7 +46,7 @@ Download UntitledImGuiFramework through git :
 git clone https://github.com/MadLadSquad/UntitledImGuiFramework.git --recursive
 ```
 
-Then go into your directory and run `./install.sh` with git bash, this will setup the base framework.
+Then go into your directory and run `chmod +x install.sh && ./install.sh` with git bash, this will setup the base framework.
 
 Then copy this repo into UntitledImGuiFramework/Projects and then cd into it and run `submodule update --init --remote --merge --recursive`, when you're done go follow the steps in [Project Generation](#project-generation)
 
