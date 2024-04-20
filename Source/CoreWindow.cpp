@@ -7,6 +7,9 @@
 #include <luau/VM/src/lstate.h>
 #include <luau/VM/src/lobject.h>
 #include <luau/VM/src/lvm.h>
+#include <memory>
+#include <Configuration/ConfigurationManager.hpp>
+
 std::map<const char*, int> optimization_levels = {
     {"No optimizations", 0},
     {"Baseline Optimization (debuggable)", 1},
@@ -37,16 +40,27 @@ enum class TableInstructionType{
     TableInstructionType_MAX
 };
 
-struct TableInstruction
+template <typename T>
+std::unique_ptr<T> DeepCopy(T* Object)
 {
+    if (!Object)
+        return nullptr;
+    
+    return std::make_unique<T>(*Object);
+}
+
+class TableInstruction
+{
+    public:
     TableInstructionType type;
-    TValue* t;
-    TValue* key;
+    const TValue* t;
+    std::unique_ptr<TValue> key;
 
-    TableInstruction(TableInstructionType type = TableInstructionType::TableInstructionType_NONE, TValue* table = nullptr, TValue* key = nullptr)
-    : type(type), t(table), key(key)
+    TableInstruction(TableInstructionType type = TableInstructionType::TableInstructionType_NONE, const TValue* table = nullptr, TValue* key = nullptr)
     {
-
+        this->type = type;
+        this->t = table;
+        this->key = DeepCopy<TValue>(key);
     }
 
     std::string GetKey()
@@ -71,9 +85,35 @@ bool init = false;
 void LuaDebugger::CoreWindow::begin()
 {
     beginAutohandle();
+    ConfigurationManager::get()->AddProvider(new LuaVMConfigurationProvider());
+    ConfigurationManager::get()->Parse();
+    
 }
 
 
+void DrawTableInstructionsTable() {
+    // Begin the table
+    if (ImGui::BeginTable("myTable", 3)) {
+        // Table headers
+        ImGui::TableSetupColumn("InstructionType");
+        ImGui::TableSetupColumn("table");
+        ImGui::TableSetupColumn("key");
+        ImGui::TableHeadersRow();
+
+        // Draw table contents
+        for (auto& inst : m_TableInstructions) {
+            ImGui::TableNextRow();
+            ImGui::TableNextColumn();
+            ImGui::Text(inst.type == TableInstructionType::TableInstructionType_GET? "GET" : "SET");
+            ImGui::TableNextColumn();
+            ImGui::Text("Unkown");
+            ImGui::TableNextColumn();
+            ImGui::Text(inst.GetKey().c_str());
+        }
+
+        ImGui::EndTable();
+    }
+}
 void LuaDebugger::CoreWindow::tick(float deltaTime)
 {
     if (!init)
@@ -93,12 +133,14 @@ void LuaDebugger::CoreWindow::tick(float deltaTime)
             TString* name = ttisstring(key) ? tsvalue(key) : 0;
             if (name)
             {
+                
                 m_TableInstructions.push_back(
                     TableInstruction(
                         TableInstructionType::TableInstructionType_GET,
                         t,
-                        key)
-                    );
+                        key
+                    )
+                );
                 std::cout << "luaV_gettable called " << getstr(name) << std::endl;
             }
             if (ttistable(t))
@@ -107,7 +149,10 @@ void LuaDebugger::CoreWindow::tick(float deltaTime)
             }
             original(L, t, key, val);
         });
-        
+        auto provider = ConfigurationManager::get()->GetProvider<WindowConfiguration*>();
+        std::cout << std::hex <<  provider << std::endl;
+        if (provider)
+            std::cout << "got provider" << std::endl;
         //rcmp::hook_function<int32_t()>(addr, [](auto original, Luau::Bytecode))
         init = true;
     }
@@ -124,10 +169,12 @@ void LuaDebugger::CoreWindow::tick(float deltaTime)
         {
             if (ImGui::Button("Execute"))
             {
+                m_TableInstructions.clear();
                 std::string result = LuaVM::get()->executeScript(luaEditor.GetText());
                 if (result != "") 
                     UVKLog::Logger::log(result.c_str(), UVKLog::LogType::UVK_LOG_TYPE_ERROR);
             }
+            DrawTableInstructionsTable();
             ImGui::EndTabItem();
         }
         if (ImGui::BeginTabItem("Documentation", (void*)nullptr, ImGuiTabItemFlags_None))

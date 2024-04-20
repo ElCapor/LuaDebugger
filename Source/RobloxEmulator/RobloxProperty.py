@@ -1,3 +1,5 @@
+from RobloxType import RobloxType
+from RobloxValue import RobloxValue
 """
 RobloxProperty
 Abstract class to represent a property inside a class
@@ -10,5 +12,14 @@ class RobloxProperty:
     def Parse(self) -> None:
         self.name :str = self.data["Name"]
         self.category :str = self.data["Category"]
-        self.type :str = self.data["ValueType"]["Category"]
-        self.typename :str = self.data["ValueType"]["Name"]
+        self.type :RobloxType = RobloxType(self.data["ValueType"])
+        self.value :RobloxValue = RobloxValue(self.type)
+    
+    def GetValue(self) -> RobloxValue:
+        return self.value
+    
+    
+    def GetType(self) -> RobloxType:
+        return self.type
+        
+       

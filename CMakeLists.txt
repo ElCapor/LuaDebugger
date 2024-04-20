@@ -245,6 +245,7 @@ set(LUAU_BUILD_CLI ON)
 set(LUAU_BUILD_TESTS  OFF)
 add_subdirectory(luau)
 add_subdirectory(rcmp)
+add_subdirectory(pugixml)
 
 # ----------------------------------------------------------------------------------------------------------------------
 # ---------------------------------------------- Add files and directories ---------------------------------------------
@@ -491,7 +492,7 @@ target_compile_definitions(LuaDebugger PRIVATE "UVK_LOG_EXPORT_FROM_LIBRARY" "UR
 
 if (WIN32)
     target_link_libraries(UntitledImGuiFramework ${GLFW_LIBRARIES_T} ${GLEW_LIBRARIES_T} ${OPENGL_LIBRARIES_T}
-            ${YAML_CPP_LIBRARIES_T} ${FREETYPE_LIBRARIES} ${VULKAN_LIBRARIES_T} rcmp Luau.Compiler Luau.VM)
+            ${YAML_CPP_LIBRARIES_T} ${FREETYPE_LIBRARIES} ${VULKAN_LIBRARIES_T} pugixml rcmp Luau.Compiler Luau.VM)
     target_link_libraries(LuaDebugger UntitledImGuiFramework ${YAML_CPP_LIBRARIES_T})
 else()
     target_link_libraries(UntitledImGuiFramework ${GLFW_LIBRARIES_T} ${GLEW_LIBRARIES_T} ${OPENGL_LIBRARIES_T}
